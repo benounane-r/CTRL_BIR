@@ -124,9 +124,9 @@ npm run seed
 
 | Member | Responsibility |
 |---|---|
-| _Name_ | Library + QR Reservation |
-| _Name_ | Study Rooms, Elevators, Classrooms |
-| _Name_ | Dashboard, Navigation, UI integration |
+| Büşra Vural | Library + QR Reservation |
+| irem Kalınsazlıoğlu | Study Rooms, Elevators, Classrooms |
+| Rania Benounane | Dashboard, Navigation, UI integration |
 
 ## Roadmap
 
