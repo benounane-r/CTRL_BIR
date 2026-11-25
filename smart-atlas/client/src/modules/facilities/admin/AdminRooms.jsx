@@ -15,7 +15,7 @@ export default function AdminRooms() {
     e.preventDefault();
     try {
       await createRoom({ name, block, floor, capacity });
-      setMessage({ type: 'ok', text: 'Oda eklendi, öğrencilere bildirim gönderildi.' });
+      setMessage({ type: 'ok', text: 'Room added. Notification sent to students.' });
       setName('');
       reload();
     } catch (err) {
@@ -34,15 +34,15 @@ export default function AdminRooms() {
 
   return (
     <section className="card">
-      <h2>Çalışma odaları</h2>
+      <h2>Study Rooms</h2>
       <form onSubmit={add}>
         <div className="form-grid">
           <label>
-            Oda adı
-            <input type="text" value={name} onChange={(e) => setName(e.target.value)} placeholder="örn. Çalışma Odası 6" />
+            Room Name
+            <input type="text" value={name} onChange={(e) => setName(e.target.value)} placeholder="e.g., Study Room 6" />
           </label>
           <label>
-            Blok
+            Block
             <select value={block} onChange={(e) => setBlock(e.target.value)}>
               {['A', 'B', 'C'].map((b) => (
                 <option key={b} value={b}>
@@ -52,7 +52,7 @@ export default function AdminRooms() {
             </select>
           </label>
           <label>
-            Kat
+            Floor
             <select value={floor} onChange={(e) => setFloor(Number(e.target.value))}>
               {Array.from({ length: 15 }, (_, i) => i).map((f) => (
                 <option key={f} value={f}>
@@ -62,12 +62,12 @@ export default function AdminRooms() {
             </select>
           </label>
           <label>
-            Kapasite
+            Capacity
             <input type="number" min="1" max="50" value={capacity} onChange={(e) => setCapacity(Number(e.target.value))} />
           </label>
         </div>
         <button className="primary" type="submit" disabled={!name.trim()}>
-          Oda ekle ve öğrencilere bildir
+          Add Room and Notify Students
         </button>
       </form>
       {message && <div className={`message ${message.type}`}>{message.text}</div>}
@@ -78,13 +78,13 @@ export default function AdminRooms() {
             <div>
               <strong>{r.name}</strong>
               <div className="hint">
-                {r.block} blok · {floorLabel(r.floor)} · {r.capacity} kişilik
+                {r.block} block · {floorLabel(r.floor)} · for {r.capacity} people
               </div>
             </div>
             <div className="row-actions">
-              <span className={`chip ${r.status === 'free' ? 'ok' : 'bad'}`}>{r.status === 'free' ? 'Boş' : 'Dolu'}</span>
+              <span className={`chip ${r.status === 'free' ? 'ok' : 'bad'}`}>{r.status === 'free' ? 'Free' : 'Occupied'}</span>
               <button onClick={() => setStatus(r, r.status === 'free' ? 'occupied' : 'free')}>
-                {r.status === 'free' ? 'Dolu yap' : 'Boş yap'}
+                {r.status === 'free' ? 'Set as Occupied' : 'Set as Free'}
               </button>
             </div>
           </li>

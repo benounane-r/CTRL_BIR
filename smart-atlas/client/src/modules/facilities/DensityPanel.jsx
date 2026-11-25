@@ -19,11 +19,11 @@ function Forecast() {
 
   return (
     <section className="card">
-      <h2>Tahmini Yoğunluk</h2>
-      <p className="hint">Ders programına göre tahmindir, ölçüm değildir.</p>
+      <h2>Density Forecast</h2>
+      <p className="hint">Based on the class schedule, not actual measurements.</p>
       <div className="form-grid">
         <label>
-          Gün
+          Day
           <select value={day} onChange={(e) => setDay(Number(e.target.value))}>
             {DAY_NAMES.map((n, i) => (
               <option key={n} value={i + 1}>
@@ -33,24 +33,24 @@ function Forecast() {
           </select>
         </label>
         <label>
-          Başlangıç
+          Start Time
           <input type="time" value={start} onChange={(e) => setStart(e.target.value)} />
         </label>
         <label>
-          Bitiş
+          End Time
           <input type="time" value={end} onChange={(e) => setEnd(e.target.value)} />
         </label>
       </div>
-      {invalid && <p className="error-text">Bitiş saati başlangıçtan sonra olmalı.</p>}
+      {invalid && <p className="error-text">End time must be after start time.</p>}
       {error && <p className="error-text">{error}</p>}
       {data && !invalid && (
         <>
           <div className="forecast">
-            {DAY_NAMES[day - 1]} {data.range.start}-{data.range.end} arasında kampüs yoğunluğunun{' '}
+            {DAY_NAMES[day - 1]} between {data.range.start}-{data.range.end} the campus density is expected to be between{' '}
             <strong>
               %{data.range.lowPercent}-%{data.range.highPercent}
             </strong>{' '}
-            arasında olması bekleniyor.
+            
           </div>
           <div className="hourly">
             {data.hourly.map((h) => (
@@ -76,15 +76,15 @@ export default function DensityPanel() {
   async function report(areaId, level) {
     try {
       await sendDensityReport(areaId, level);
-      setMessage({ type: 'ok', text: 'Bildirimin için teşekkürler!' });
+      setMessage({ type: 'ok', text: 'Thank you for your report!' });
       reload();
     } catch (err) {
       setMessage({ type: 'error', text: err.message });
     }
   }
 
-  if (error) return <div className="card error-text">Yoğunluk bilgisi alınamadı: {error}</div>;
-  if (!data) return <div className="card">Yükleniyor...</div>;
+  if (error) return <div className="card error-text">Failed to fetch density information: {error}</div>;
+  if (!data) return <div className="card">Loading...</div>;
 
   const sensors = data.areas.filter((a) => a.type === 'sensor');
   const reports = data.areas.filter((a) => a.type === 'report');
@@ -92,8 +92,8 @@ export default function DensityPanel() {
   return (
     <div>
       <section className="card">
-        <h2>Kafeler ve Yemekhane</h2>
-        <p className="hint">Kapı sayaçlarına göre (demoda simüle edilir).</p>
+        <h2>Cafeterias and Dining Halls</h2>
+        <p className="hint">Based on door counters (simulated in the demo).</p>
         <div className="grid">
           {sensors.map((a) => (
             <div className="area" key={a.areaId}>
@@ -106,7 +106,7 @@ export default function DensityPanel() {
                 <div className={`bar-fill ${LEVEL_CLS[a.level]}`} style={{ width: `${a.occupancyRate}%` }} />
               </div>
               <div className="hint">
-                {a.count} / {a.capacity} kişi (%{a.occupancyRate})
+                {a.count} / {a.capacity} people (%{a.occupancyRate})
               </div>
             </div>
           ))}
@@ -114,8 +114,8 @@ export default function DensityPanel() {
       </section>
 
       <section className="card">
-        <h2>Ortak Alanlar</h2>
-        <p className="hint">Öğrenci bildirimlerine göre (son {data.reportWindowMinutes} dakika).</p>
+        <h2>Common Areas</h2>
+        <p className="hint">Based on student reports (last {data.reportWindowMinutes} minutes).</p>
         {message && <div className={`message ${message.type}`}>{message.text}</div>}
         <div className="grid">
           {reports.map((a) => (
@@ -126,12 +126,12 @@ export default function DensityPanel() {
               </div>
               <div className="hint">
                 {a.location}
-                {a.reportCount > 0 ? ` · ${a.reportCount} bildirim, son: ${formatDateTime(a.lastReportAt)}` : ''}
+                {a.reportCount > 0 ? ` · ${a.reportCount} reports, last: ${formatDateTime(a.lastReportAt)}` : ''}
               </div>
               <div className="row-actions">
-                <button onClick={() => report(a.areaId, 'low')}>Boş</button>
-                <button onClick={() => report(a.areaId, 'medium')}>Orta</button>
-                <button onClick={() => report(a.areaId, 'high')}>Kalabalık</button>
+                <button onClick={() => report(a.areaId, 'low')}>Empty</button>
+                <button onClick={() => report(a.areaId, 'medium')}>Moderate</button>
+                <button onClick={() => report(a.areaId, 'high')}>Crowded</button>
               </div>
             </div>
           ))}

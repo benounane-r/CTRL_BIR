@@ -36,21 +36,21 @@ export default function ClassroomsPanel() {
 
   return (
     <section className="card">
-      <h2>Boş Sınıflar</h2>
-      <p className="hint">Örnek ders programına göre gösterilir. Sadece derslikler listelenir.</p>
+      <h2>Available Classrooms</h2>
+      <p className="hint"> It shows available classrooms based on the schedule.</p>
 
       <div className="tabs small">
         <button className={mode === 'range' ? 'tab active' : 'tab'} onClick={() => setMode('range')}>
-          Saat aralığı seç
+          Select Time Range
         </button>
         <button className={mode === 'now' ? 'tab active' : 'tab'} onClick={() => setMode('now')}>
-          Şu an
+          Now
         </button>
       </div>
 
       <div className="form-grid">
         <label>
-          Gün
+          Day
           <select value={day} onChange={(e) => setDay(Number(e.target.value))}>
             {DAY_NAMES.map((n, i) => (
               <option key={n} value={i + 1}>
@@ -62,31 +62,31 @@ export default function ClassroomsPanel() {
         {mode === 'range' && (
           <>
             <label>
-              Başlangıç
+              Start Time
               <input type="time" value={start} onChange={(e) => setStart(e.target.value)} />
             </label>
             <label>
-              Bitiş
+              End Time
               <input type="time" value={end} onChange={(e) => setEnd(e.target.value)} />
             </label>
           </>
         )}
         <label>
-          Blok
+          Block
           <select value={block} onChange={(e) => setBlock(e.target.value)}>
-            <option value="">Hepsi</option>
+            <option value="">All</option>
             <option value="A">A</option>
             <option value="B">B</option>
             <option value="C">C</option>
           </select>
         </label>
         <label>
-          Kat
+          Floor
           <select value={floor} onChange={(e) => setFloor(e.target.value)}>
-            <option value="">Hepsi</option>
+            <option value="">All</option>
             {[1, 2, 3, 4, 5, 6, 7, 8].map((f) => (
               <option key={f} value={f}>
-                {f}. kat
+                {f}. floor
               </option>
             ))}
           </select>
@@ -95,19 +95,19 @@ export default function ClassroomsPanel() {
 
       <label className="check">
         <input type="checkbox" checked={onlyFree} onChange={(e) => setOnlyFree(e.target.checked)} />
-        Sadece boş olanları göster
+        Show only free classrooms
       </label>
 
-      {rangeInvalid && <p className="error-text">Bitiş saati başlangıçtan sonra olmalı.</p>}
-      {error && <p className="error-text">Sınıflar alınamadı: {error}</p>}
+      {rangeInvalid && <p className="error-text">End time must be after start time.</p>}
+      {error && <p className="error-text">Failed to fetch classrooms: {error}</p>}
 
       {data && (
         <>
           <p className="hint">
             {mode === 'range'
-              ? `${DAY_NAMES[day - 1]} ${start}-${end} aralığının tamamında`
-              : `${DAY_NAMES[day - 1]}, şu an`}{' '}
-            · {data.count} sınıf
+              ? `${DAY_NAMES[day - 1]} ${start}-${end} between`
+              : `${DAY_NAMES[day - 1]}, now`}{' '}
+            · {data.count} classroom
           </p>
           <ul className="list">
             {data.classrooms.map((c) => (
@@ -115,18 +115,18 @@ export default function ClassroomsPanel() {
                 <div>
                   <strong>{c.code}</strong> <span className="hint">{c.name}</span>
                   <div className="hint">
-                    {c.block} blok · {c.floor}. kat
+                    {c.block} block · {c.floor}. floor
                   </div>
                   <div className="hint">
                     {c.busy.length > 0
-                      ? `Dolu saatler: ${c.busy.map((b) => `${b.start}-${b.end}`).join(', ')}`
-                      : 'Bu gün ders yok'}
+                      ? `Busy hours: ${c.busy.map((b) => `${b.start}-${b.end}`).join(', ')}`
+                      : 'Today there is no class scheduled.'}
                   </div>
                 </div>
-                <span className={`chip ${c.status === 'free' ? 'ok' : 'bad'}`}>{c.status === 'free' ? 'Boş' : 'Dolu'}</span>
+                <span className={`chip ${c.status === 'free' ? 'ok' : 'bad'}`}>{c.status === 'free' ? 'Free' : 'Occupied'}</span>
               </li>
             ))}
-            {data.classrooms.length === 0 && <li className="hint">Bu koşullarda boş sınıf bulunamadı.</li>}
+            {data.classrooms.length === 0 && <li className="hint">No free classrooms found under these conditions.</li>}
           </ul>
         </>
       )}

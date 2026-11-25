@@ -26,9 +26,9 @@ export default function FaultForm() {
         floor,
         room,
         description,
-        elevatorId: category === 'Asansör' ? elevatorId : ''
+        elevatorId: category === 'Elevator' ? elevatorId : ''
       });
-      setResult({ type: 'ok', text: 'Bildirimin alındı, ilgili birimlere iletildi. Teşekkürler!' });
+      setResult({ type: 'ok', text: 'Report submitted, notified relevant units. Thank you!' });
       setDescription('');
       setRoom('');
     } catch (err) {
@@ -38,15 +38,15 @@ export default function FaultForm() {
     }
   }
 
-  if (!meta) return <div className="card">Yükleniyor...</div>;
+  if (!meta) return <div className="card">Loading...</div>;
 
   return (
     <section className="card">
-      <h2>Arıza Bildir</h2>
+      <h2>Report Issue</h2>
       <form onSubmit={submit}>
         <div className="form-grid">
           <label>
-            Kategori
+            Category
             <select value={category} onChange={(e) => setCategory(e.target.value)}>
               {meta.categories.map((c) => (
                 <option key={c} value={c}>
@@ -56,7 +56,7 @@ export default function FaultForm() {
             </select>
           </label>
           <label>
-            Blok
+            Block
             <select value={block} onChange={(e) => setBlock(e.target.value)}>
               {meta.blocks.map((b) => (
                 <option key={b} value={b}>
@@ -66,7 +66,7 @@ export default function FaultForm() {
             </select>
           </label>
           <label>
-            Kat
+            Floor
             <select value={floor} onChange={(e) => setFloor(Number(e.target.value))}>
               {Array.from({ length: 15 }, (_, i) => i).map((f) => (
                 <option key={f} value={f}>
@@ -76,16 +76,16 @@ export default function FaultForm() {
             </select>
           </label>
           <label>
-            Oda / sınıf (isteğe bağlı)
-            <input type="text" value={room} onChange={(e) => setRoom(e.target.value)} placeholder="örn. C5-03" />
+            Room / Class (optional)
+            <input type="text" value={room} onChange={(e) => setRoom(e.target.value)} placeholder="e.g., C5-03" />
           </label>
         </div>
 
-        {category === 'Asansör' && elevators && (
+        {category === 'Elevator' && elevators && (
           <label>
-            Hangi asansör? (isteğe bağlı)
+            Which elevator? (optional)
             <select value={elevatorId} onChange={(e) => setElevatorId(e.target.value)}>
-              <option value="">Bilmiyorum</option>
+              <option value="">I don't know</option>
               {elevators.map((el) => (
                 <option key={el.elevatorId} value={el.elevatorId}>
                   {el.name}
@@ -96,21 +96,21 @@ export default function FaultForm() {
         )}
 
         <label>
-          Açıklama
+          Explanation
           <textarea
             rows={4}
             value={description}
             onChange={(e) => setDescription(e.target.value)}
-            placeholder="Sorunu kısaca anlat (en az 5 karakter)"
+            placeholder="Briefly describe the issue (minimum 5 characters)"
           />
         </label>
 
         <button className="primary" type="submit" disabled={busy || description.trim().length < 5}>
-          {busy ? 'Gönderiliyor...' : 'Gönder'}
+          {busy ? 'Submitting...' : 'Submit'}
         </button>
       </form>
       {result && <div className={`message ${result.type}`}>{result.text}</div>}
-      <p className="hint">Asansör arızası bildirimi, çalışan onaylayana kadar asansörün durumunu değiştirmez.</p>
+      <p className="hint">Elevator fault report will not change the elevator's status until confirmed by staff.</p>
     </section>
   );
 }

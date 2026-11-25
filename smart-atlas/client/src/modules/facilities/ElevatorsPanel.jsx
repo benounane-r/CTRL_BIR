@@ -2,14 +2,14 @@ import { getElevators, getElevatorGroups } from './api.js';
 import { usePolling } from './hooks.js';
 import { ELEVATOR_STATUS, CROWD_LABELS } from './format.js';
 
-const TYPE_BADGE = { staff: 'Personel asansörü (hoca ofisleri)', emergency: 'Acil durum asansörü' };
+const TYPE_BADGE = { staff: 'Staff Elevator (Instructor Offices)', emergency: 'Emergency Elevator' };
 
 export default function ElevatorsPanel() {
   const { data: elevators, error } = usePolling(getElevators, [], 5000);
   const { data: groups } = usePolling(getElevatorGroups, [], 5000);
 
-  if (error) return <div className="card error-text">Asansör bilgisi alınamadı: {error}</div>;
-  if (!elevators || !groups) return <div className="card">Yükleniyor...</div>;
+  if (error) return <div className="card error-text">Failed to fetch elevator information: {error}</div>;
+  if (!elevators || !groups) return <div className="card">Loading...</div>;
 
   const alerts = groups.filter((g) => g.message);
 
@@ -30,7 +30,7 @@ export default function ElevatorsPanel() {
               <h2>{g.name}</h2>
               {g.trackCrowd && (
                 <span className={`chip ${g.crowdLevel === 'low' ? 'ok' : g.crowdLevel === 'medium' ? 'warn' : 'bad'}`}>
-                  Yoğunluk: {CROWD_LABELS[g.crowdLevel]}
+                  Crowded: {CROWD_LABELS[g.crowdLevel]}
                 </span>
               )}
             </div>
@@ -42,9 +42,9 @@ export default function ElevatorsPanel() {
                     <div>
                       <strong>{e.name}</strong>
                       <div className="hint">
-                        {e.floorFrom ? `${e.floorFrom}-${e.floorTo}. katlar` : 'Kat bilgisi yok'}
+                        {e.floorFrom ? `${e.floorFrom}-${e.floorTo}. floors` : 'No floor information'}
                         {TYPE_BADGE[e.type] ? ` · ${TYPE_BADGE[e.type]}` : ''}
-                        {e.blocks && e.blocks.length > 1 ? ` · ${e.blocks.join(' ve ')} blok` : ''}
+                        {e.blocks && e.blocks.length > 1 ? ` · ${e.blocks.join(' and ')} blocks` : ''}
                       </div>
                       {e.note && <div className="hint">{e.note}</div>}
                     </div>
@@ -56,7 +56,7 @@ export default function ElevatorsPanel() {
           </section>
         );
       })}
-      <p className="hint">Asansör sorunu mu var? "Arıza Bildir" sekmesinden haber verebilirsin.</p>
+      <p className="hint">Do you have an elevator issue? You can report it from the "Report Issue" tab.</p>
     </div>
   );
 }

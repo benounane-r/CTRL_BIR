@@ -77,14 +77,14 @@ export default function NotificationBell() {
 
   return (
     <div className="bell-wrap">
-      <button className="bell" onClick={toggle} aria-label="Bildirimler">
+      <button className="bell" onClick={toggle} aria-label="Notifications">
         🔔{unread > 0 && <span className="bell-badge">{unread}</span>}
       </button>
 
       {open && (
         <div className="bell-menu">
-          <strong>Bildirimler</strong>
-          {items.length === 0 && <p className="hint">Henüz bildirim yok.</p>}
+          <strong>Notifications</strong>
+          {items.length === 0 && <p className="hint">No notifications yet.</p>}
           {items.map((n) => (
             <div className="bell-item" key={n._id}>
               <div>{n.message}</div>

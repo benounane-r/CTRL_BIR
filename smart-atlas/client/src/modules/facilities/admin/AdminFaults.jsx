@@ -13,7 +13,7 @@ function FaultRow({ fault, elevator, onSaved }) {
       const body = { status };
       if (elevatorStatus) body.elevatorStatus = elevatorStatus;
       await updateFault(fault._id, body);
-      setMessage({ type: 'ok', text: 'Kaydedildi.' });
+      setMessage({ type: 'ok', text: 'Saved.' });
       setElevatorStatus('');
       onSaved();
     } catch (err) {
@@ -30,14 +30,14 @@ function FaultRow({ fault, elevator, onSaved }) {
         </span>
       </div>
       <div className="hint">
-        {fault.block} blok · {floorLabel(fault.floor)}
+        {fault.block} block · {floorLabel(fault.floor)}
         {fault.room ? ` · ${fault.room}` : ''} · {formatDateTime(fault.createdAt)}
       </div>
       <p>{fault.description}</p>
 
       <div className="form-grid">
         <label>
-          Arıza durumu
+          Fault Status
           <select value={status} onChange={(e) => setStatus(e.target.value)}>
             {Object.entries(FAULT_STATUS).map(([value, label]) => (
               <option key={value} value={value}>
@@ -48,9 +48,9 @@ function FaultRow({ fault, elevator, onSaved }) {
         </label>
         {fault.elevatorId && (
           <label>
-            {elevator ? elevator.name : fault.elevatorId} durumu (onay)
+            {elevator ? elevator.name : fault.elevatorId} situation (approval)
             <select value={elevatorStatus} onChange={(e) => setElevatorStatus(e.target.value)}>
-              <option value="">Değiştirme{elevator ? ` (şu an: ${ELEVATOR_STATUS[elevator.status]?.label})` : ''}</option>
+              <option value="">Change{elevator ? ` (current: ${ELEVATOR_STATUS[elevator.status]?.label})` : ''}</option>
               {Object.entries(ELEVATOR_STATUS).map(([value, s]) => (
                 <option key={value} value={value}>
                   {s.label}
@@ -60,7 +60,7 @@ function FaultRow({ fault, elevator, onSaved }) {
           </label>
         )}
       </div>
-      <button onClick={save}>Kaydet</button>
+      <button onClick={save}>Save</button>
       {message && <span className={`inline-msg ${message.type}`}> {message.text}</span>}
     </li>
   );
@@ -74,9 +74,9 @@ export default function AdminFaults() {
   return (
     <section className="card">
       <div className="card-head">
-        <h2>Arıza bildirimleri</h2>
+        <h2>Fault Reports</h2>
         <select value={filter} onChange={(e) => setFilter(e.target.value)}>
-          <option value="">Hepsi</option>
+          <option value="">All</option>
           {Object.entries(FAULT_STATUS).map(([value, label]) => (
             <option key={value} value={value}>
               {label}
@@ -85,7 +85,7 @@ export default function AdminFaults() {
         </select>
       </div>
       {error && <p className="error-text">{error}</p>}
-      {!faults && <p>Yükleniyor...</p>}
+      {!faults && <p>Loading...</p>}
       <ul className="faults">
         {faults &&
           faults.map((f) => (
@@ -99,7 +99,7 @@ export default function AdminFaults() {
               }}
             />
           ))}
-        {faults && faults.length === 0 && <li className="hint">Bu filtrede arıza yok.</li>}
+        {faults && faults.length === 0 && <li className="hint">No faults found with this filter.</li>}
       </ul>
     </section>
   );
