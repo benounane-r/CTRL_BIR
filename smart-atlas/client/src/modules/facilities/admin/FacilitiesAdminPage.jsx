@@ -12,10 +12,10 @@ export default function FacilitiesAdminPage() {
   const [key, setKey] = useState(0); // sıfırlayınca bölümleri yeniden yükle
 
   async function handleReset() {
-    if (!window.confirm('Tüm demo verisi başlangıç haline dönecek. Emin misin?')) return;
+    if (!window.confirm('All demo data will be reset to its initial state. Are you sure?')) return;
     try {
       await resetDemo();
-      setMessage({ type: 'ok', text: 'Demo verisi sıfırlandı.' });
+      setMessage({ type: 'ok', text: 'Demo data reset to initial state.' });
       setKey((k) => k + 1);
     } catch (err) {
       setMessage({ type: 'error', text: err.message });
@@ -25,14 +25,14 @@ export default function FacilitiesAdminPage() {
   return (
     <div key={key}>
       <h2 className="page-title">Admin</h2>
-      <p className="hint">Yaptığın değişiklikler öğrenci ekranına birkaç saniye içinde yansır.</p>
+      <p className="hint">Your changes will reflect on the student screen within a few seconds.</p>
       {message && <div className={`message ${message.type}`}>{message.text}</div>}
       <AdminElevators />
       <AdminFaults />
       <AdminRooms />
       <AdminDensity />
       <button className="danger" onClick={handleReset}>
-        Demo verisini sıfırla
+        Reset Demo Data
       </button>
     </div>
   );

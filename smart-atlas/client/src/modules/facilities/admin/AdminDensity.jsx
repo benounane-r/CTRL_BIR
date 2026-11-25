@@ -17,13 +17,13 @@ export default function AdminDensity() {
     }
   }
 
-  if (!data) return <div className="card">Yükleniyor...</div>;
+  if (!data) return <div className="card">Loading...</div>;
   const sensors = data.areas.filter((a) => a.type === 'sensor');
 
   return (
     <section className="card">
-      <h2>Kapı sensörü simülasyonu</h2>
-      <p className="hint">Kafeler ve yemekhane için giren/çıkan sayısı. Sayı 0'ın altına inmez, kapasiteyi geçmez.</p>
+      <h2>Door Sensor Simulation</h2>
+      <p className="hint">Number of people entering/exiting for cafeterias and dining halls. The number does not go below 0 and does not exceed capacity.</p>
       {error && <p className="error-text">{error}</p>}
       <ul className="list">
         {sensors.map((a) => (
@@ -31,13 +31,13 @@ export default function AdminDensity() {
             <div>
               <strong>{a.name}</strong>
               <div className="hint">
-                {a.count} / {a.capacity} kişi (%{a.occupancyRate})
+                {a.count} / {a.capacity} people (%{a.occupancyRate})
               </div>
             </div>
             <div className="row-actions">
               <button onClick={() => gate(a.areaId, 'out', 5)}>−5</button>
-              <button onClick={() => gate(a.areaId, 'out', 1)}>−1 çıkış</button>
-              <button onClick={() => gate(a.areaId, 'in', 1)}>+1 giriş</button>
+              <button onClick={() => gate(a.areaId, 'out', 1)}>−1 exit</button>
+              <button onClick={() => gate(a.areaId, 'in', 1)}>+1 enter</button>
               <button onClick={() => gate(a.areaId, 'in', 5)}>+5</button>
             </div>
           </li>

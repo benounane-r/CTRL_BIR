@@ -10,20 +10,20 @@ export default function RoomsPanel() {
   async function report(room, status) {
     try {
       await setRoomStatus(room.roomId, status, 'student');
-      setMessage({ type: 'ok', text: status === 'occupied' ? 'Teşekkürler, oda dolu olarak işaretlendi.' : 'Teşekkürler, oda boş olarak işaretlendi.' });
+      setMessage({ type: 'ok', text: status === 'occupied' ? 'Thank you for reporting the room as occupied.' : 'Thank you for reporting the room as free.' });
       reload();
     } catch (err) {
       setMessage({ type: 'error', text: err.message });
     }
   }
 
-  if (error) return <div className="card error-text">Odalar alınamadı: {error}</div>;
-  if (!rooms) return <div className="card">Yükleniyor...</div>;
+  if (error) return <div className="card error-text">Rooms could not be loaded: {error}</div>;
+  if (!rooms) return <div className="card">Loading...</div>;
 
   return (
     <section className="card">
-      <h2>Çalışma Odaları</h2>
-      <p className="hint">Odayı kullanmaya başlarken "Dolu bildir", çıkarken "Boşalttım" de. Bilgi örnek veridir.</p>
+      <h2>Study Rooms</h2>
+      <p className="hint">Report the room as occupied when you start using it, and as free when you leave. This is just an example.</p>
       {message && <div className={`message ${message.type}`}>{message.text}</div>}
       <ul className="list">
         {rooms.map((r) => (
@@ -31,20 +31,20 @@ export default function RoomsPanel() {
             <div>
               <strong>{r.name}</strong>
               <div className="hint">
-                {r.block} blok · {floorLabel(r.floor)} · {r.capacity} kişilik
+                {r.block} block · {floorLabel(r.floor)} · {r.capacity} people
               </div>
             </div>
             <div className="row-actions">
-              <span className={`chip ${r.status === 'free' ? 'ok' : 'bad'}`}>{r.status === 'free' ? 'Boş' : 'Dolu'}</span>
+              <span className={`chip ${r.status === 'free' ? 'ok' : 'bad'}`}>{r.status === 'free' ? 'Free' : 'Occupied'}</span>
               {r.status === 'free' ? (
-                <button onClick={() => report(r, 'occupied')}>Dolu bildir</button>
+                <button onClick={() => report(r, 'occupied')}>Report Occupied</button>
               ) : (
-                <button onClick={() => report(r, 'free')}>Boşalttım</button>
+                <button onClick={() => report(r, 'free')}>Report Free</button>
               )}
             </div>
           </li>
         ))}
-        {rooms.length === 0 && <li className="hint">Henüz çalışma odası eklenmemiş.</li>}
+        {rooms.length === 0 && <li className="hint">No study rooms available.</li>}
       </ul>
     </section>
   );

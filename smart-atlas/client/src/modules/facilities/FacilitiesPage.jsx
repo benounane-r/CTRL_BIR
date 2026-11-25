@@ -7,14 +7,14 @@ import FaultForm from './FaultForm.jsx';
 import './facilities.css';
 
 const TABS = [
-  { id: 'elevators', label: 'Asansörler' },
-  { id: 'classrooms', label: 'Sınıflar' },
-  { id: 'rooms', label: 'Çalışma Odaları' },
-  { id: 'density', label: 'Kampüs Yoğunluğu' },
-  { id: 'fault', label: 'Arıza Bildir' }
+  { id: 'elevators', label: 'Elevators' },
+  { id: 'classrooms', label: 'Classrooms' },
+  { id: 'rooms', label: 'Study Rooms' },
+  { id: 'density', label: 'Campus Density' },
+  { id: 'fault', label: 'Report Issue' }
 ];
 
-// Öğrencinin gördüğü Campus Facilities sayfası
+// Student's view of the Campus Facilities page
 export default function FacilitiesPage() {
   const [tab, setTab] = useState('elevators');
 
