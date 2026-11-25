@@ -9,7 +9,7 @@ const faultRoutes = require('./routes/faultRoutes');
 const roomRoutes = require('./routes/roomRoutes');
 const densityRoutes = require('./routes/densityRoutes');
 const demoRoutes = require('./routes/demoRoutes');
-
+const libraryRoutes = require('./routes/libraryRoutes');
 const app = express();
 app.use(cors());         // React farklı porttan istek atabilsin
 app.use(express.json()); // gelen JSON gövdesini okur
@@ -23,6 +23,7 @@ app.use('/api', faultRoutes);
 app.use('/api', roomRoutes);    // çalışma odaları + bildirimler
 app.use('/api', densityRoutes);
 app.use('/api', demoRoutes);
+app.use('/api', libraryRoutes);
 // Diğer modüller birleştirilirken buraya eklenecek (Library, Navigation vb.)
 
 // Tanımsız /api yolları için JSON 404
