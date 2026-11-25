@@ -22,7 +22,7 @@ function Stat({ title, value, sub, tone, onClick }) {
 }
 
 export default function DashboardPage({ go }) {
-  const { elevators, offline } = useElevatorData();
+  const { elevators, offline, empty } = useElevatorData();
   const { data: reservations } = usePolling(getLibraryReservations, [], 5000);
   const { data: rooms } = usePolling(getRooms, [], 5000);
   const { data: free } = usePolling(() => getClassrooms({ onlyFree: true }), [], 15000);
@@ -43,6 +43,7 @@ export default function DashboardPage({ go }) {
       <p className="hint">Your Campus, Made Smarter. Demo data, not connected to Atlas University systems.</p>
 
       {offline && <div className="alert">Server not reachable: some numbers show “–”.</div>}
+      {empty && <div className="alert">The server has no demo data yet. Open Admin and press “Reset Demo Data”.</div>}
       {alerts.map((g) => (
         <div className="alert" key={g.groupId}>⚠️ {g.message}</div>
       ))}

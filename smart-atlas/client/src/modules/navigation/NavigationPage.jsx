@@ -53,7 +53,7 @@ function PlacePicker({ label, value, onChange }) {
 }
 
 export default function NavigationPage() {
-  const { elevators, crowd, outIds, offline, stale } = useElevatorData();
+  const { elevators, crowd, outIds, offline, empty, stale } = useElevatorData();
 
   const [start, setStart] = useState({ placeId: "ENT-A", block: "A", level: "G" });
   const [end, setEnd] = useState({ placeId: "C5-03", block: "C", level: "5" });
@@ -109,6 +109,12 @@ export default function NavigationPage() {
       <p className="hint">Routes avoid elevators that are out of service. The route updates by itself when an elevator status changes.</p>
 
       {offline && <div className="alert">Server not reachable: using the built-in demo elevator list (statuses will not change).</div>}
+      {empty && (
+        <div className="alert">
+          The server has no elevator data yet. Open Admin and press “Reset Demo Data” (or run <code>npm run seed</code> in the server
+          folder). Until then the built-in elevator list is used and statuses will not change.
+        </div>
+      )}
       {stale && <div className="alert">Connection lost: showing the last known elevator status.</div>}
 
       <section className="card">
