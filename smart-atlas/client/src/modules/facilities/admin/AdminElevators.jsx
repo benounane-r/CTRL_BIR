@@ -29,11 +29,11 @@ export default function AdminElevators() {
     }
   }
 
-  if (!elevators || !groups) return <div className="card">Yükleniyor...</div>;
+  if (!elevators || !groups) return <div className="card">Loading...</div>;
 
   return (
     <section className="card">
-      <h2>Asansör durumları</h2>
+      <h2>Elevator Statuses</h2>
       {error && <p className="error-text">{error}</p>}
       <ul className="list">
         {elevators.map((e) => (
@@ -50,8 +50,8 @@ export default function AdminElevators() {
         ))}
       </ul>
 
-      <h3>Yoğunluk (kamera simülasyonu)</h3>
-      <p className="hint">Gerçek sistemde asansör önündeki kameralardan gelecek veri burada elle ayarlanır.</p>
+      <h3>Occupancy (Camera Simulation)</h3>
+      <p className="hint">In a real system, data from the cameras in front of the elevators would be manually adjusted here.</p>
       <ul className="list">
         {groups
           .filter((g) => g.trackCrowd)

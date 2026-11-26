@@ -38,38 +38,41 @@ async function seedAll() {
 
   // Arızalar (örnek)
   await Fault.insertMany([
-    { category: 'Asansör', block: 'A', floor: 0, elevatorId: 'A-2', description: 'Asansörün kapısı geç kapanıyor, zaman zaman takılıyor.', status: 'open' },
-    { category: 'Klima/ısıtma', block: 'B', floor: 4, room: 'B4-05', description: 'Sınıfta klima çalışmıyor, çok sıcak.', status: 'in_progress' }
+    { category: 'Elevator', block: 'A', floor: 0, elevatorId: 'A-2', description: 'The elevator door closes slowly and occasionally gets stuck.', status: 'open' },
+    { category: 'Air Conditioning/Heating', block: 'B', floor: 4, room: 'B4-05', description: 'The air conditioning is not working in the classroom.', status: 'in_progress' }
   ]);
 
   // Çalışma odaları (örnek)
   await StudyRoom.insertMany([
-    { roomId: 'SR-1', name: 'Çalışma Odası 1', block: 'B', floor: 3, capacity: 2, status: 'free' },
-    { roomId: 'SR-2', name: 'Çalışma Odası 2', block: 'B', floor: 3, capacity: 4, status: 'occupied', occupiedSince: new Date(), statusSource: 'student' },
-    { roomId: 'SR-3', name: 'Çalışma Odası 3', block: 'B', floor: 4, capacity: 6, status: 'free' },
-    { roomId: 'SR-4', name: 'Çalışma Odası 4', block: 'C', floor: 2, capacity: 4, status: 'free' },
-    { roomId: 'SR-5', name: 'Çalışma Odası 5', block: 'A', floor: 3, capacity: 2, status: 'occupied', occupiedSince: new Date(), statusSource: 'student' }
+    { roomId: 'SR-1', name: 'Study Room 1', block: 'B', floor: 3, capacity: 2, status: 'free' },
+    { roomId: 'SR-2', name: 'Study Room 2', block: 'B', floor: 3, capacity: 4, status: 'occupied', occupiedSince: new Date(), statusSource: 'student' },
+    { roomId: 'SR-3', name: 'Study Room 3', block: 'B', floor: 4, capacity: 6, status: 'free' },
+    { roomId: 'SR-4', name: 'Study Room 4', block: 'C', floor: 2, capacity: 4, status: 'free' },
+    { roomId: 'SR-5', name: 'Study Room 5', block: 'A', floor: 3, capacity: 2, status: 'occupied', occupiedSince: new Date(), statusSource: 'student' }
   ]);
 
   // Kampüs yoğunluk bölgeleri (isim ve kapasiteler örnek)
   const today = todayKey();
-  await Area.insertMany([
-    { areaId: 'kafe-1', name: 'Kafe 1', location: 'Zemin kat', type: 'sensor', capacity: 60, count: 24, countDate: today },
-    { areaId: 'kafe-2', name: 'Kafe 2', location: 'Zemin kat', type: 'sensor', capacity: 60, count: 41, countDate: today },
-    { areaId: 'yemekhane', name: 'Yemekhane', location: 'B blok 9. kat', type: 'sensor', capacity: 300, count: 130, countDate: today },
-    { areaId: 'cadde', name: 'Cadde ortak oturma alanı', location: 'Okul caddesi', type: 'report', capacity: 200 },
-    { areaId: 'bahce', name: 'Bahçe', location: 'Kampüs bahçesi', type: 'report', capacity: 100 }
-  ]);
-  await DensityReport.insertMany([
-    { areaId: 'cadde', level: 'medium' },
-    { areaId: 'cadde', level: 'high' }
-  ]);
 
-  return {
-    elevators: elevators.length,
-    classrooms: classroomData.length,
-    lessons: real.length + sample.length
-  };
+await Area.insertMany([
+  { areaId: 'cafe-1', name: 'Cafe 1', location: 'Ground Floor', type: 'sensor', capacity: 60, count: 24, countDate: today },
+  { areaId: 'cafe-2', name: 'Cafe 2', location: 'Ground Floor', type: 'sensor', capacity: 60, count: 41, countDate: today },
+  { areaId: 'cafeteria', name: 'Cafeteria', location: 'Block B, 9th Floor', type: 'sensor', capacity: 300, count: 130, countDate: today },
+  { areaId: 'street', name: 'Street Common Seating Area', location: 'Campus Street', type: 'report', capacity: 200 },
+  { areaId: 'garden', name: 'Garden', location: 'Campus Garden', type: 'report', capacity: 100 }
+]);
+
+await DensityReport.insertMany([
+  { areaId: 'street', level: 'medium' },
+  { areaId: 'street', level: 'high' }
+]);
+
+return {
+  elevators: elevators.length,
+  classrooms: classroomData.length,
+  lessons: real.length + sample.length
+};
 }
 
 module.exports = { seedAll };
+

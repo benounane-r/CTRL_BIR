@@ -6,7 +6,7 @@ import { floorLabel } from './format.js';
 export default function FaultForm() {
   const { data: meta } = usePolling(getFaultMeta, []);
   const { data: elevators } = usePolling(getElevators, []);
-  const [category, setCategory] = useState('Asansör');
+  const [category, setCategory] = useState('Elevator');
   const [block, setBlock] = useState('A');
   const [floor, setFloor] = useState(0);
   const [room, setRoom] = useState('');

@@ -1,4 +1,8 @@
-const LABELS = { low: 'Boş', medium: 'Orta', high: 'Kalabalık' };
+const LABELS = {
+  low: 'Low',
+  medium: 'Medium',
+  high: 'Crowded'
+};
 const SCORE = { low: 1, medium: 2, high: 3 };
 
 // Sensörlü alan: doluluk oranına göre seviye

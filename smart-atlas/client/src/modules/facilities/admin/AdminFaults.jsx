@@ -5,7 +5,7 @@ import { ELEVATOR_STATUS, FAULT_STATUS, floorLabel, formatDateTime } from '../fo
 
 function FaultRow({ fault, elevator, onSaved }) {
   const [status, setStatus] = useState(fault.status);
-  const [elevatorStatus, setElevatorStatus] = useState(''); // '' = asansör durumunu değiştirme
+  const [elevatorStatus, setElevatorStatus] = useState(''); // '' = do not change elevator status
   const [message, setMessage] = useState(null);
 
   async function save() {

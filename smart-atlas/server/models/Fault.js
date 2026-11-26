@@ -1,17 +1,26 @@
+
 const mongoose = require('mongoose');
 
-const CATEGORIES = ['Asansör', 'Sınıf ekipmanı', 'Klima/ısıtma', 'Elektrik/aydınlatma', 'Su/tuvalet', 'Diğer'];
-const BLOCKS = ['A', 'B', 'C', 'Diğer'];
-const STATUSES = ['open', 'in_progress', 'resolved']; // Açık, İşlemde, Çözüldü
+const CATEGORIES = [
+  'Elevator',
+  'Classroom Equipment',
+  'Air Conditioning/Heating',
+  'Electrical/Lighting',
+  'Water/Restrooms',
+  'Other'
+];
+
+const BLOCKS = ['A', 'B', 'C', 'Other'];
+const STATUSES = ['open', 'in_progress', 'resolved'];
 
 const faultSchema = new mongoose.Schema(
   {
     category: { type: String, enum: CATEGORIES, required: true },
     block: { type: String, enum: BLOCKS, required: true },
-    floor: { type: Number, min: 0, max: 30, default: 0 }, // 0 = zemin kat
+    floor: { type: Number, min: 0, max: 30, default: 0 },
     room: { type: String, default: '' },
     description: { type: String, required: true, minlength: 5, maxlength: 500 },
-    elevatorId: { type: String, default: null }, // kategori Asansör ise hangi asansör
+    elevatorId: { type: String, default: null },
     status: { type: String, enum: STATUSES, default: 'open' }
   },
   { timestamps: true }
